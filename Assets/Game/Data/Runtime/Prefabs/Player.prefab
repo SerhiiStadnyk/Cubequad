@@ -92,7 +92,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _jumpSpeed: 1
+  _jumpSpeed: 10
 --- !u!114 &3329155645316767793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c6a84661d253b4b95ce7ae8e07bccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0
+  _moveSpeed: 5
   _rotationSpeed: 100
 --- !u!114 &562918514631560456
 MonoBehaviour:

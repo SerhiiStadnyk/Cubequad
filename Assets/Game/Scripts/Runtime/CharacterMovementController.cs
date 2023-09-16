@@ -58,10 +58,10 @@ namespace Game.Scripts.Runtime
         }
 
 
-        public void Jump(Vector3 startPoint, Vector3 endPoint)
+        public void Jump(Vector3 startPoint, Vector3 endPoint, JumpData jumpData)
         {
             _isJumping = true;
-            _characterJumpController.Jump(startPoint, endPoint, () => _isJumping = false);
+            _characterJumpController.Jump(startPoint, endPoint, jumpData, () => _isJumping = false);
         }
     }
 }

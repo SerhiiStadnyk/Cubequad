@@ -20,6 +20,10 @@ namespace Game.Scripts.Runtime.SplinePoints
 
         public override SplinePoint NextSplinePoint => GetNextSplinePoint();
 
+        public override bool IsJumpingPoint => ChoseOutputPoint().OutputPoint.IsJumpingPoint;
+
+        public override JumpData JumpData => ChoseOutputPoint().OutputPoint.JumpData;
+
 
         [Inject]
         public void Inject(DiContainer container)
@@ -31,24 +35,10 @@ namespace Game.Scripts.Runtime.SplinePoints
 
         private SplinePoint GetNextSplinePoint()
         {
-            Transform characterPos;
-
-            if (_character != null)
-            {
-                characterPos = _character.transform;
-            }
-            else
-            {
-                characterPos = transform;
-            }
-
-            OutputData chosenOutput = _outputData
-                .Where(output => output.OutputPoint != null)
-                .OrderBy(output => Vector3.Distance(characterPos.position, output.OutputPoint.transform.position))
-                .FirstOrDefault();
+            OutputData chosenOutput = ChoseOutputPoint();
 
             SplinePoint nextSplinePoint = null;
-            if (_platformSegment != null && _platformSegment.OutputPlatforms != null && _platformSegment.OutputPlatforms.Count > 0)
+            if (_platformSegment != null && _platformSegment.OutputPlatforms is { Count: > 0 })
             {
                 PlatformSegment nextPlatform = _platformSegment.OutputPlatforms[chosenOutput.NextPlatformId];
                 if (nextPlatform != null)
@@ -58,6 +48,17 @@ namespace Game.Scripts.Runtime.SplinePoints
             }
 
             return nextSplinePoint;
+        }
+
+
+        private OutputData ChoseOutputPoint()
+        {
+            Transform characterPos = _character != null ? _character.transform : transform;
+
+            return _outputData
+                .Where(output => output.OutputPoint != null)
+                .OrderBy(output => Vector3.Distance(characterPos.position, output.OutputPoint.transform.position))
+                .FirstOrDefault();
         }
 
 

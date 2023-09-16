@@ -73,9 +73,9 @@ namespace Game.Scripts.Runtime
 
         private void OnSplineReached()
         {
+            SplineActions();
             _movementController.SetCurrentSplinePoint(_movementController.CurrentSplinePoint.NextSplinePoint);
             RotateToSplinePoint();
-            SplineActions();
         }
 
 
@@ -83,7 +83,10 @@ namespace Game.Scripts.Runtime
         {
             if (_movementController.CurrentSplinePoint.IsJumpingPoint)
             {
-                _movementController.Jump(transform.position, _movementController.CurrentSplinePoint.NextSplinePoint.transform.position);
+                _movementController.Jump(
+                    transform.position,
+                    _movementController.CurrentSplinePoint.NextSplinePoint.transform.position,
+                    _movementController.CurrentSplinePoint.JumpData);
             }
         }
 
