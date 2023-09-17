@@ -60,7 +60,7 @@ namespace Game.Scripts.Runtime
 
         private bool CanStrafe()
         {
-            return _movementController.IsJumping || CanMaintainConstrains();
+            return CanMaintainConstrains();
         }
 
 
