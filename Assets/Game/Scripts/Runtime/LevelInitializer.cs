@@ -1,4 +1,4 @@
-using Game.Scripts.Runtime.SplinePoints;
+using Cinemachine;
 using UnityEngine;
 using Zenject;
 
@@ -10,9 +10,13 @@ namespace Game.Scripts.Runtime
         private Level _level;
 
         [SerializeField]
-        private GameObject _player;
+        private GameObject _character;
+
+        [SerializeField]
+        private CinemachineVirtualCamera _camera;
 
         private DiContainer _container;
+        private GameObject _characterObject;
 
 
         [Inject]
@@ -22,7 +26,7 @@ namespace Game.Scripts.Runtime
         }
 
 
-        protected void Start()
+        protected void Awake()
         {
             SpawnLevel();
             SpawnPlayer();
@@ -38,7 +42,8 @@ namespace Game.Scripts.Runtime
         private void SpawnPlayer()
         {
             Transform startingPoint = _level.StartingPlatform.InputSplinePoints[0].transform;
-            _container.InstantiatePrefab(_player, startingPoint.position, transform.rotation, transform.parent);
+            _character.transform.position = startingPoint.position;
+            _character.GetComponent<CharacterMovementSplineFollowing>().Init(_container);
         }
     }
 }

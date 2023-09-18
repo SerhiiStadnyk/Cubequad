@@ -12,6 +12,9 @@ namespace Game.Scripts.Runtime
         [SerializeField]
         private float _rotationSpeed;
 
+        [SerializeField]
+        private Transform _splineFollower;
+
         private CharacterMovementController _movementController;
         private Level _level;
         private SplinePoint _firstSpline;
@@ -19,15 +22,10 @@ namespace Game.Scripts.Runtime
         private bool _hasTarget;
 
 
-        [Inject]
-        public void Inject(Level level)
+        public void Init(DiContainer container)
         {
-            _level = level;
-        }
+            _level = container.Resolve<Level>();
 
-
-        private void Start()
-        {
             _movementController = GetComponent<CharacterMovementController>();
             _firstSpline = _level.StartingPlatform.InputSplinePoints[0];
             _movementController.SetCurrentSplinePoint(_firstSpline);
@@ -48,6 +46,14 @@ namespace Game.Scripts.Runtime
             {
                 result = _movementController.CurrentSplinePoint.transform.forward * (_moveSpeed * Time.deltaTime);
                 CalculateSplineReach();
+            }
+            if (_hasTarget)
+            {
+                Vector3 foo = _movementController.CurrentSplinePoint.transform.InverseTransformPoint(transform.position);
+                foo.x = 0;
+                foo = _movementController.CurrentSplinePoint.transform.TransformPoint(foo);
+                _splineFollower.position = foo;
+                _splineFollower.rotation = transform.rotation;
             }
 
             return result;

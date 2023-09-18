@@ -40,15 +40,6 @@ namespace Game.Scripts.Runtime
             }
 
             _characterController.Move(moveDirection);
-            DumbCameraMovement();
-        }
-
-
-        private void DumbCameraMovement()
-        {
-            // var foo = _currentSplinePoint.transform.InverseTransformVector(Camera.main.transform.position);
-            // foo.x = 0;
-            // Camera.main.transform.position = _currentSplinePoint.transform.TransformVector(foo);
         }
 
 
