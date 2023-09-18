@@ -8,9 +8,6 @@ namespace Game.Scripts.Runtime.SplinePoints
         private SplinePoint _nextSplinePoint;
 
         [SerializeField]
-        private float _strafeConstrains;
-
-        [SerializeField]
         private float _rotationSpeed;
 
         [SerializeField]
@@ -19,7 +16,6 @@ namespace Game.Scripts.Runtime.SplinePoints
         [SerializeField]
         protected bool _isJumpingPoint;
 
-        public float StrafeConstrains => _strafeConstrains;
         public virtual SplinePoint NextSplinePoint => _nextSplinePoint;
         public float RotationSpeed => _rotationSpeed;
         public virtual bool IsJumpingPoint => _isJumpingPoint;
