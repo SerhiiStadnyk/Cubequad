@@ -14,6 +14,18 @@ namespace Game.Scripts.Runtime
         [SerializeField]
         private CharacterJumpController _characterJumpController;
 
+        [SerializeField]
+        private Animator _animatorController;
+
+        [SerializeField]
+        private string _runAnimTrigger = "Run";
+
+        [SerializeField]
+        private string _jumpAnimTrigger = "Jump";
+
+        [SerializeField]
+        private string _landAnimTrigger = "Land";
+
         private List<MovementLogicBase> _movementLogic;
         private bool _isJumping;
         private SplinePoint _currentSplinePoint;
@@ -27,6 +39,7 @@ namespace Game.Scripts.Runtime
         protected void Start()
         {
             _movementLogic = GetComponents<MovementLogicBase>().ToList();
+            _animatorController.SetTrigger(_runAnimTrigger);
         }
 
 
@@ -51,8 +64,16 @@ namespace Game.Scripts.Runtime
 
         public void Jump(Vector3 startPoint, Vector3 endPoint, JumpData jumpData)
         {
+            _animatorController.SetTrigger(_jumpAnimTrigger);
             _isJumping = true;
-            _characterJumpController.Jump(startPoint, endPoint, jumpData, () => _isJumping = false);
+            _characterJumpController.Jump(startPoint, endPoint, jumpData, OnJumpEnd);
+        }
+
+
+        private void OnJumpEnd()
+        {
+            _animatorController.SetTrigger(_landAnimTrigger);
+            _isJumping = false;
         }
     }
 }

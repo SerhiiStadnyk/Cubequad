@@ -1,4 +1,5 @@
 using Game.Scripts.Runtime.SplinePoints;
+using UnityEditor.Animations;
 using UnityEngine;
 using Zenject;
 
@@ -49,10 +50,10 @@ namespace Game.Scripts.Runtime
             }
             if (_hasTarget)
             {
-                Vector3 foo = _movementController.CurrentSplinePoint.transform.InverseTransformPoint(transform.position);
-                foo.x = 0;
-                foo = _movementController.CurrentSplinePoint.transform.TransformPoint(foo);
-                _splineFollower.position = foo;
+                Vector3 followerPos = _movementController.CurrentSplinePoint.transform.InverseTransformPoint(transform.position);
+                followerPos.x = 0;
+                followerPos = _movementController.CurrentSplinePoint.transform.TransformPoint(followerPos);
+                _splineFollower.position = followerPos;
                 _splineFollower.rotation = transform.rotation;
             }
 
