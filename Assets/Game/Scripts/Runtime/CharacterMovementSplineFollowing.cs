@@ -16,6 +16,7 @@ namespace Game.Scripts.Runtime
         private Level _level;
         private SplinePoint _firstSpline;
         private LTDescr _rotationTween;
+        private bool _hasTarget;
 
 
         [Inject]
@@ -30,12 +31,7 @@ namespace Game.Scripts.Runtime
             _movementController = GetComponent<CharacterMovementController>();
             _firstSpline = _level.StartingPlatform.InputSplinePoints[0];
             _movementController.SetCurrentSplinePoint(_firstSpline);
-        }
-
-
-        protected void Update()
-        {
-            CalculateSplineReach();
+            _hasTarget = true;
         }
 
 
@@ -48,9 +44,10 @@ namespace Game.Scripts.Runtime
         private Vector3 ForwardMovement()
         {
             Vector3 result = Vector3.zero;
-            if (!_movementController.IsJumping)
+            if (_hasTarget && !_movementController.IsJumping)
             {
                 result = _movementController.CurrentSplinePoint.transform.forward * (_moveSpeed * Time.deltaTime);
+                CalculateSplineReach();
             }
 
             return result;
@@ -73,9 +70,17 @@ namespace Game.Scripts.Runtime
 
         private void OnSplineReached()
         {
-            SplineActions();
-            _movementController.SetCurrentSplinePoint(_movementController.CurrentSplinePoint.NextSplinePoint);
-            RotateToSplinePoint();
+            if (_movementController.CurrentSplinePoint.NextSplinePoint == null)
+            {
+                _hasTarget = false;
+                _movementController.SetCurrentSplinePoint(null);
+            }
+            else
+            {
+                SplineActions();
+                _movementController.SetCurrentSplinePoint(_movementController.CurrentSplinePoint.NextSplinePoint);
+                RotateToSplinePoint();
+            }
         }
 
 

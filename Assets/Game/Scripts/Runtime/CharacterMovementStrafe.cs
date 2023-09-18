@@ -60,7 +60,7 @@ namespace Game.Scripts.Runtime
 
         private bool CanStrafe()
         {
-            return CanMaintainConstrains();
+            return _movementController.CurrentSplinePoint != null && CanMaintainConstrains();
         }
 
 
