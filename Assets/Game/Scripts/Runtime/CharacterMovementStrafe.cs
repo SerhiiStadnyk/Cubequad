@@ -8,7 +8,10 @@ namespace Game.Scripts.Runtime
         private float _strafeSpeed = 10f;
 
         [SerializeField]
-        private float _xMoveConstrainsDefault = 1.5f;
+        private float _raycastRadiusOffset;
+
+        [SerializeField]
+        private float _raycastHeightOffset;
 
         private Camera _camera;
         private CharacterMovementController _movementController;
@@ -48,7 +51,7 @@ namespace Game.Scripts.Runtime
                 Vector3 offset = targetPos - charPos;
                 float magnitude = offset.magnitude;
 
-                if (magnitude > 0.1f && CanStrafe())
+                if (magnitude > 0.1f && CanStrafe(targetPos, targetPos))
                 {
                     result = offset.normalized * (_strafeSpeed * Time.deltaTime);
                 }
@@ -58,56 +61,34 @@ namespace Game.Scripts.Runtime
         }
 
 
-        private bool CanStrafe()
+        private bool CanStrafe(Vector3 pivotPoint, Vector3 targetPoint)
         {
-            return _movementController.CurrentSplinePoint != null && CanMaintainConstrains();
+            return _movementController.CurrentSplinePoint != null && CanMaintainConstrains(pivotPoint, targetPoint);
         }
 
 
-        private bool IsInConstrains()
-        {
-            // Set constraints for strafing
-            float constrains = _movementController.CurrentSplinePoint.StrafeConstrains > 0
-                ? _movementController.CurrentSplinePoint.StrafeConstrains
-                : _xMoveConstrainsDefault;
-
-            // Calculate the character's position relative to the spline point
-            Vector3 characterToSplinePoint = _movementController.CurrentSplinePoint.transform.InverseTransformPoint(transform.position);
-
-            return Mathf.Abs(characterToSplinePoint.x) <= constrains;
-        }
-
-
-        private bool CanMaintainConstrains()
+        private bool CanMaintainConstrains(Vector3 pivotPoint, Vector3 targetPoint)
         {
             // Determine strafe direction based on touch position
             Vector3 strafeSide = Input.GetTouch(0).position.x < Screen.width / 2f ? Vector3.left : Vector3.right;
 
-            // Set constraints for strafing
-            float constrains = _movementController.CurrentSplinePoint.StrafeConstrains > 0
-                ? _movementController.CurrentSplinePoint.StrafeConstrains
-                : _xMoveConstrainsDefault;
-
-            // Calculate the character's position relative to the spline point
-            Vector3 characterToSplinePoint = _movementController.CurrentSplinePoint.transform.InverseTransformPoint(transform.position);
-
-            // Calculate the normalized strafe destination
-            float normalizeStrafeDest = characterToSplinePoint.x + (strafeSide.x * _strafeSpeed * Time.deltaTime);
-
-            // Determine if strafing is allowed based on constraints and direction
-            return Mathf.Abs(normalizeStrafeDest) <= constrains;
+            return _movementController.IsJumping ? IsSolidSurfaceAvailable(_movementController.CurrentSplinePoint.transform, strafeSide) : IsSolidSurfaceAvailable(transform, strafeSide);
         }
 
 
-        private bool IsSolidSurfaceAvailable(Vector3 pivotPoint, Vector3 targetPoint)
+        private bool IsSolidSurfaceAvailable(Transform pivotTransform, Vector3 strafeSide)
         {
             bool result = false;
 
-            float rayLength = _movementController.CharacterController.height * 0.6f;
-            Vector3 side = targetPoint.x >= pivotPoint.x ? Vector3.right : Vector3.left;
-            Vector3 rayOrigin = pivotPoint + side * _movementController.CharacterController.radius;
+            float rayLength = _movementController.CharacterController.height * 0.5f + _raycastHeightOffset;
+            Vector3 offset = pivotTransform.right * (strafeSide.x * (_movementController.CharacterController.radius + _raycastRadiusOffset));
+            Vector3 pivotPosition = pivotTransform.InverseTransformPoint(transform.position);
+            pivotPosition.z = 0;
+            pivotPosition.y = 0;
+            pivotPosition = pivotTransform.TransformPoint(pivotPosition);
+            Vector3 rayOrigin = pivotPosition + offset;
 
-            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, rayLength))
+            if (Physics.Raycast(rayOrigin, pivotTransform.up * -1, out RaycastHit hit, rayLength))
             {
                 result = true;
             }
