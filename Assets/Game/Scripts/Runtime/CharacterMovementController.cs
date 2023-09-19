@@ -70,7 +70,6 @@ namespace Game.Scripts.Runtime
 
         private void StopMovement(LevelOutcomeHandler.LevelOutcome levelOutcome)
         {
-            Debug.LogWarning("StopMovement");
             _isStopped = true;
             switch (levelOutcome)
             {
