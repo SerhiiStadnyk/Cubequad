@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Game.Scripts.Runtime.SplinePoints;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -28,12 +27,9 @@ namespace Game.Scripts.Runtime
 
         private List<MovementLogicBase> _movementLogic;
         private bool _isJumping;
-        private SplinePoint _currentSplinePoint;
 
         public bool IsJumping => _isJumping;
         public CharacterController CharacterController => _characterController;
-
-        public SplinePoint CurrentSplinePoint => _currentSplinePoint;
 
 
         protected void Start()
@@ -53,12 +49,6 @@ namespace Game.Scripts.Runtime
             }
 
             _characterController.Move(moveDirection);
-        }
-
-
-        public void SetCurrentSplinePoint(SplinePoint newPoint)
-        {
-            _currentSplinePoint = newPoint;
         }
 
 

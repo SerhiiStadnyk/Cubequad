@@ -15,11 +15,13 @@ namespace Game.Scripts.Runtime
 
         private Camera _camera;
         private CharacterMovementController _movementController;
+        private SplinePathTracker _splinePathTracker;
 
 
         protected void Start()
         {
             _movementController = GetComponent<CharacterMovementController>();
+            _splinePathTracker = GetComponent<SplinePathTracker>();
             _camera = Camera.main;
         }
 
@@ -63,7 +65,7 @@ namespace Game.Scripts.Runtime
 
         private bool CanStrafe(Vector3 pivotPoint, Vector3 targetPoint)
         {
-            return _movementController.CurrentSplinePoint != null && CanMaintainConstrains(pivotPoint, targetPoint);
+            return _splinePathTracker.CurrentSplinePoint != null && CanMaintainConstrains(pivotPoint, targetPoint);
         }
 
 
@@ -72,7 +74,7 @@ namespace Game.Scripts.Runtime
             // Determine strafe direction based on touch position
             Vector3 strafeSide = Input.GetTouch(0).position.x < Screen.width / 2f ? Vector3.left : Vector3.right;
 
-            return _movementController.IsJumping ? IsSolidSurfaceAvailable(_movementController.CurrentSplinePoint.transform, strafeSide) : IsSolidSurfaceAvailable(transform, strafeSide);
+            return _movementController.IsJumping ? IsSolidSurfaceAvailable(_splinePathTracker.CurrentSplinePoint.transform, strafeSide) : IsSolidSurfaceAvailable(transform, strafeSide);
         }
 
 
