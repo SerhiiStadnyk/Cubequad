@@ -21,11 +21,11 @@ namespace Game.Scripts.Runtime
 
         protected void Update()
         {
-            if (_splinePathTracker != null && _splinePathTracker.CurrentSplinePoint != null)
+            if (_splinePathTracker != null && _splinePathTracker.SplinePointTarget != null)
             {
-                Vector3 followerPos = _splinePathTracker.CurrentSplinePoint.transform.InverseTransformPoint(_targetTransform.position);
+                Vector3 followerPos = _splinePathTracker.SplinePointTarget.transform.InverseTransformPoint(_targetTransform.position);
                 followerPos.x = 0;
-                followerPos = _splinePathTracker.CurrentSplinePoint.transform.TransformPoint(followerPos);
+                followerPos = _splinePathTracker.SplinePointTarget.transform.TransformPoint(followerPos);
                 _transform.position = followerPos;
                 _transform.rotation = _targetTransform.rotation;
             }

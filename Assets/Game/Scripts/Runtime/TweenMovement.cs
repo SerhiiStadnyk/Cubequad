@@ -38,7 +38,6 @@ namespace Game.Scripts.Runtime
         private void StartTween()
         {
             Vector3 offset = _transform.right * _targetOffset.x + _transform.up * _targetOffset.y + _transform.forward * _targetOffset.z;
-            Debug.LogWarning(offset);
 
             Vector3 targetPoint = _originalPos + offset;
 

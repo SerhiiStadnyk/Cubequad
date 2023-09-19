@@ -65,7 +65,7 @@ namespace Game.Scripts.Runtime
 
         private bool CanStrafe(Vector3 pivotPoint, Vector3 targetPoint)
         {
-            return _splinePathTracker.CurrentSplinePoint != null && CanMaintainConstrains(pivotPoint, targetPoint);
+            return _splinePathTracker.SplinePointTarget != null && CanMaintainConstrains(pivotPoint, targetPoint);
         }
 
 
@@ -74,7 +74,7 @@ namespace Game.Scripts.Runtime
             // Determine strafe direction based on touch position
             Vector3 strafeSide = Input.GetTouch(0).position.x < Screen.width / 2f ? Vector3.left : Vector3.right;
 
-            return _movementController.IsJumping ? IsSolidSurfaceAvailable(_splinePathTracker.CurrentSplinePoint.transform, strafeSide) : IsSolidSurfaceAvailable(transform, strafeSide);
+            return _movementController.IsJumping ? IsSolidSurfaceAvailable(_splinePathTracker.SplinePointTarget.transform, strafeSide) : IsSolidSurfaceAvailable(transform, strafeSide);
         }
 
 

@@ -20,9 +20,7 @@ namespace Game.Scripts.Runtime.SplinePoints
 
         public override SplinePoint NextSplinePoint => GetNextSplinePoint();
 
-        public override bool IsJumpingPoint => ChoseOutputPoint().OutputPoint.IsJumpingPoint;
-
-        public override JumpData JumpData => ChoseOutputPoint().OutputPoint.JumpData;
+        public override List<ISplinePointComponent> SplinePointComponents => ChoseOutputPoint().OutputPoint.SplinePointComponents;
 
 
         [Inject]

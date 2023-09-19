@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.Scripts.Runtime.SplinePoints
@@ -10,16 +12,17 @@ namespace Game.Scripts.Runtime.SplinePoints
         [SerializeField]
         private float _rotationSpeed;
 
-        [SerializeField]
-        private JumpData _jumpData;
-
-        [SerializeField]
-        protected bool _isJumpingPoint;
+        private List<ISplinePointComponent> _splinePointComponents;
 
         public virtual SplinePoint NextSplinePoint => _nextSplinePoint;
+        public virtual List<ISplinePointComponent> SplinePointComponents => _splinePointComponents;
         public float RotationSpeed => _rotationSpeed;
-        public virtual bool IsJumpingPoint => _isJumpingPoint;
-        public virtual JumpData JumpData => _jumpData;
+
+
+        protected void Awake()
+        {
+            _splinePointComponents = GetComponents<ISplinePointComponent>().ToList();
+        }
 
 
         public void SetNextSplinePoint(SplinePoint nextPoint)

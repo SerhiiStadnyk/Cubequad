@@ -6,10 +6,12 @@ namespace Game.Scripts.Runtime
 {
     public class SplinePathTracker : MonoBehaviour
     {
-        private SplinePoint _currentSplinePoint;
-        private bool _canTrack = false;
+        private SplinePoint _splinePointTarget;
+        private SplinePoint _splinePointOrigin;
+        private bool _canTrack;
 
-        public SplinePoint CurrentSplinePoint => _currentSplinePoint;
+        public SplinePoint SplinePointTarget => _splinePointTarget;
+        public SplinePoint SplinePointOrigin => _splinePointOrigin;
 
         public event Action OnSplineReached;
 
@@ -25,7 +27,7 @@ namespace Game.Scripts.Runtime
 
         public void SetCurrentSplinePoint(SplinePoint newPoint)
         {
-            _currentSplinePoint = newPoint;
+            _splinePointTarget = newPoint;
             if (newPoint != null)
             {
                 _canTrack = true;
@@ -35,7 +37,7 @@ namespace Game.Scripts.Runtime
 
         private void CalculateSplineReach()
         {
-            Vector3 targetPointPosition = _currentSplinePoint.transform.position;
+            Vector3 targetPointPosition = _splinePointTarget.transform.position;
             Vector3 direction = targetPointPosition - transform.position;
             direction.y = 0f;
 
@@ -49,12 +51,14 @@ namespace Game.Scripts.Runtime
 
         private void SplineReached()
         {
-            OnSplineReached?.Invoke();
-            SetCurrentSplinePoint(_currentSplinePoint.NextSplinePoint);
-            if (_currentSplinePoint == null)
+            _splinePointOrigin = _splinePointTarget;
+            SetCurrentSplinePoint(_splinePointTarget.NextSplinePoint);
+            if (_splinePointTarget == null)
             {
                 _canTrack = false;
             }
+
+            OnSplineReached?.Invoke();
         }
     }
 }

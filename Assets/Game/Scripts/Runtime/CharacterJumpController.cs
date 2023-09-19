@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Linq;
+using Game.Scripts.Runtime.SplinePoints;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -12,6 +14,43 @@ namespace Game.Scripts.Runtime
 
         private Coroutine _jumpCoroutine;
         private Vector3 _movementVector;
+        private CharacterMovementController _movementController;
+        private SplinePathTracker _splinePathTracker;
+
+
+        protected void Awake()
+        {
+            _splinePathTracker = GetComponent<SplinePathTracker>();
+            _movementController = GetComponent<CharacterMovementController>();
+        }
+
+
+        protected void OnEnable()
+        {
+            _splinePathTracker.OnSplineReached += OnSplinePointReached;
+        }
+
+
+        protected void OnDisable()
+        {
+            if (_splinePathTracker != null)
+            {
+                _splinePathTracker.OnSplineReached -= OnSplinePointReached;
+            }
+        }
+
+
+        private void OnSplinePointReached()
+        {
+            SplinePointJumpComponent firstBar = _splinePathTracker.SplinePointOrigin.SplinePointComponents.OfType<SplinePointJumpComponent>().FirstOrDefault();
+            if (firstBar != null)
+            {
+                _movementController.Jump(
+                    transform.position,
+                    _splinePathTracker.SplinePointTarget.transform.position,
+                    firstBar.JumpData);
+            }
+        }
 
 
         public override Vector3 GetMovementVector()

@@ -54,22 +54,10 @@ namespace Game.Scripts.Runtime
             Vector3 result = Vector3.zero;
             if (_hasTarget && !_movementController.IsJumping)
             {
-                result = _splinePathTracker.CurrentSplinePoint.transform.forward * (_moveSpeed * Time.deltaTime);
+                result = _splinePathTracker.SplinePointTarget.transform.forward * (_moveSpeed * Time.deltaTime);
             }
 
             return result;
-        }
-
-
-        private void SplineActions()
-        {
-            if (_splinePathTracker.CurrentSplinePoint.IsJumpingPoint)
-            {
-                _movementController.Jump(
-                    transform.position,
-                    _splinePathTracker.CurrentSplinePoint.NextSplinePoint.transform.position,
-                    _splinePathTracker.CurrentSplinePoint.JumpData);
-            }
         }
 
 
@@ -80,9 +68,9 @@ namespace Game.Scripts.Runtime
                 LeanTween.cancel(_rotationTween.id);
             }
 
-            float rotSpeed = (_splinePathTracker.CurrentSplinePoint.RotationSpeed > 0) ? _splinePathTracker.CurrentSplinePoint.RotationSpeed : _rotationSpeed;
+            float rotSpeed = (_splinePathTracker.SplinePointTarget.RotationSpeed > 0) ? _splinePathTracker.SplinePointTarget.RotationSpeed : _rotationSpeed;
 
-            Quaternion targetRotation = _splinePathTracker.CurrentSplinePoint.transform.rotation;
+            Quaternion targetRotation = _splinePathTracker.SplinePointTarget.transform.rotation;
             Quaternion currentRot = transform.rotation;
             float rotDuration = Quaternion.Angle(targetRotation, currentRot) / rotSpeed;
 
@@ -93,13 +81,12 @@ namespace Game.Scripts.Runtime
 
         private void OnSplinePointReached()
         {
-            if (_splinePathTracker.CurrentSplinePoint.NextSplinePoint == null)
+            if (_splinePathTracker.SplinePointTarget == null)
             {
                 _hasTarget = false;
             }
             else
             {
-                SplineActions();
                 RotateToSplinePoint();
             }
         }
