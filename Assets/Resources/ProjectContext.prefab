@@ -1831,7 +1831,7 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - PROCEED
-        - 
+        - PROCEED
         byteData: 03000000
         arrayParamSizes: 
         arrayParamTypes: []
