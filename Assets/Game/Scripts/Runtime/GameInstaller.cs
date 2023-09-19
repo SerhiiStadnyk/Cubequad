@@ -11,10 +11,14 @@ namespace Game.Scripts.Runtime
         [SerializeField]
         private StringId _playerCharacterId;
 
+        [SerializeField]
+        private LevelOutcomeHandler _levelOutcomeHandler;
+
 
         public override void InstallBindings()
         {
             Container.BindInstance(_character).WithConcreteId(_playerCharacterId.Id);
+            Container.BindInstance(_levelOutcomeHandler).AsSingle();
         }
     }
 }

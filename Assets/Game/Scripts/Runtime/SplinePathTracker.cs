@@ -58,6 +58,8 @@ namespace Game.Scripts.Runtime
                 _canTrack = false;
             }
 
+            _splinePointOrigin.PerformActions();
+
             OnSplineReached?.Invoke();
         }
     }

@@ -12,16 +12,22 @@ namespace Game.Scripts.Runtime.SplinePoints
         [SerializeField]
         private float _rotationSpeed;
 
-        private List<ISplinePointComponent> _splinePointComponents;
+        protected List<ISplinePointComponent> splinePointComponents;
 
         public virtual SplinePoint NextSplinePoint => _nextSplinePoint;
-        public virtual List<ISplinePointComponent> SplinePointComponents => _splinePointComponents;
+        public virtual List<ISplinePointComponent> SplinePointComponents => splinePointComponents;
         public float RotationSpeed => _rotationSpeed;
 
 
         protected void Awake()
         {
-            _splinePointComponents = GetComponents<ISplinePointComponent>().ToList();
+            splinePointComponents = GetComponents<ISplinePointComponent>().ToList();
+        }
+
+
+        public virtual void PerformActions()
+        {
+            splinePointComponents.OfType<ISplinePointAction>().ToList().ForEach(splineAction => splineAction.PerformAction());
         }
 
 

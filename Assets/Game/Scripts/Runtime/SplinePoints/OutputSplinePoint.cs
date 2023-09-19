@@ -31,6 +31,12 @@ namespace Game.Scripts.Runtime.SplinePoints
         }
 
 
+        public override void PerformActions()
+        {
+            ChoseOutputPoint().OutputPoint.PerformActions();
+        }
+
+
         private SplinePoint GetNextSplinePoint()
         {
             OutputData chosenOutput = ChoseOutputPoint();
