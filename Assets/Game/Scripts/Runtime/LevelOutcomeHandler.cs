@@ -18,11 +18,11 @@ namespace Game.Scripts.Runtime
 
         public void TriggerOutcome(LevelOutcome outcomeType)
         {
-            _isFinished = true;
             if (!_isFinished)
             {
                 OnLevelOutcome?.Invoke(outcomeType);
             }
+            _isFinished = true;
         }
     }
 }
