@@ -1,13 +1,9 @@
-using System;
 using UnityEngine;
 
 namespace Game.Scripts.Runtime
 {
     public partial class SafeAreaAdjuster : MonoBehaviour
     {
-        [SerializeField]
-        private float _updateTolerance = 1f;
-
         private RectTransform _rectTransform;
         private Vector2 _deltaPos;
 

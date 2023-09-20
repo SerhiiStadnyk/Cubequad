@@ -17,7 +17,7 @@ namespace Game.Scripts.Runtime
 
         public override void InstallBindings()
         {
-            Container.BindInstance(_character).WithConcreteId(_playerCharacterId.Id);
+            Container.BindInstance(_character).WithId(_playerCharacterId.Id);
             Container.BindInstance(_levelOutcomeHandler).AsSingle();
         }
     }

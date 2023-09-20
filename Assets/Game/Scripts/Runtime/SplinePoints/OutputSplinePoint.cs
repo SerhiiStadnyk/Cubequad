@@ -26,8 +26,7 @@ namespace Game.Scripts.Runtime.SplinePoints
         [Inject]
         public void Inject(DiContainer container)
         {
-            //_character = container.ResolveId<GameObject>(_playerCharacterId.Id);
-            _character = container.Resolve<GameObject>();
+            _character = container.ResolveId<GameObject>(_playerCharacterId.Id);
         }
 
 
