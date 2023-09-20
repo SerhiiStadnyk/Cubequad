@@ -8,10 +8,10 @@ namespace Game.Scripts.Editor
     [InitializeOnLoad]
     public class SceneSwitcher
     {
-        private static string _sceneEntryPoint = "Assets/Game/Data/Runtime/Assets/Scenes/Scene_EntryPoint.unity";
-        private static string _sceneGlobal = "Assets/Game/Data/Runtime/Assets/Scenes/Scene_Global.unity";
-        private static string _sceneMainMenu = "Assets/Game/Data/Runtime/Assets/Scenes/Scene_MainMenu.unity";
-        private static string _sceneGame = "Assets/Game/Data/Runtime/Assets/Scenes/Scene_Game.unity";
+        private static string _sceneEntryPoint = "Assets/Game/Data/Runtime/Scenes/Scene_EntryPoint.unity";
+        private static string _sceneGlobal = "Assets/Game/Data/Runtime/Scenes/Scene_Global.unity";
+        private static string _sceneMainMenu = "Assets/Game/Data/Runtime/Scenes/Scene_MainMenu.unity";
+        private static string _sceneGame = "Assets/Game/Data/Runtime/Scenes/Scene_Game.unity";
 
         private static string _prefabGlobalContext = "Assets/Resources/ProjectContext.prefab";
 

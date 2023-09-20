@@ -8,21 +8,12 @@ namespace Game.Scripts.Runtime
         [SerializeField]
         private PlatformSegment _startingPlatform;
 
-        private DiContainer _container;
-
         public PlatformSegment StartingPlatform => _startingPlatform;
 
 
-        [Inject]
-        public void Inject(DiContainer container)
+        public void Init(DiContainer container)
         {
-            _container = container;
-        }
-
-
-        public void Init()
-        {
-            _container.BindInstance(this).AsSingle();
+            container.BindInstance(this).AsSingle();
         }
     }
 }

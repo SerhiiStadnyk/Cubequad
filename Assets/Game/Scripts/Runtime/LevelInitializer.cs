@@ -1,4 +1,3 @@
-using Cinemachine;
 using UnityEngine;
 using Zenject;
 
@@ -7,43 +6,52 @@ namespace Game.Scripts.Runtime
     public class LevelInitializer : MonoBehaviour
     {
         [SerializeField]
-        private Level _level;
-
-        [SerializeField]
         private GameObject _character;
 
         [SerializeField]
-        private CinemachineVirtualCamera _camera;
+        private LevelFactory _levelFactory;
+
+        [SerializeField]
+        private Transform _levelContainer;
+
+        private GameObject _characterObject;
+        private Level _currentLevel;
 
         private DiContainer _container;
-        private GameObject _characterObject;
+        private ProgressionManager _progressionManager;
 
 
         [Inject]
-        public void Inject(DiContainer container)
+        public void Inject(DiContainer container, ProgressionManager progressionManager)
         {
             _container = container;
+            _progressionManager = progressionManager;
         }
 
 
-        protected void Awake()
+        protected void Start()
         {
-            SpawnLevel();
-            SpawnPlayer();
+            LoadLevel();
+            InitPlayer();
         }
 
 
-        private void SpawnLevel()
+        private void LoadLevel()
         {
-            _level.Init();
+            int levelId = _progressionManager.CurrentLevelId;
+            GameObject levelPrefab = _levelFactory.GetLevel(levelId);
+            _currentLevel = _container.InstantiatePrefab(levelPrefab, Vector3.zero, Quaternion.identity, _levelContainer).GetComponent<Level>();
+            _currentLevel.Init(_container);
         }
 
 
-        private void SpawnPlayer()
+        private void InitPlayer()
         {
-            Transform startingPoint = _level.StartingPlatform.InputSplinePoints[0].transform;
+            Transform startingPoint = _currentLevel.StartingPlatform.InputSplinePoints[0].transform;
             _character.transform.position = startingPoint.position;
+
             _character.GetComponent<CharacterMovementSplineFollowing>().Init(_container);
+            _character.GetComponent<CharacterMovementController>().MovementStatus(true);
         }
     }
 }

@@ -49,28 +49,36 @@ namespace Game.Scripts.Runtime
         }
 
 
+        public void MovementStatus(bool status)
+        {
+            _isStopped = !status;
+            _characterController.enabled = status;
+
+            _animatorController.SetTrigger(status ? _runAnimTrigger : _idleAnimTrigger);
+        }
+
+
         protected void Awake()
         {
             _movementLogic = GetComponents<MovementLogicBase>().ToList();
-            _animatorController.SetTrigger(_runAnimTrigger);
         }
 
 
         protected void OnEnable()
         {
-            _levelOutcomeHandler.OnLevelOutcome += StopMovement;
+            _levelOutcomeHandler.OnLevelOutcome += OnLevelOutcome;
         }
 
 
         protected void OnDisable()
         {
-            _levelOutcomeHandler.OnLevelOutcome -= StopMovement;
+            _levelOutcomeHandler.OnLevelOutcome -= OnLevelOutcome;
         }
 
 
-        private void StopMovement(LevelOutcomeHandler.LevelOutcome levelOutcome)
+        private void OnLevelOutcome(LevelOutcomeHandler.LevelOutcome levelOutcome)
         {
-            _isStopped = true;
+            MovementStatus(false);
             switch (levelOutcome)
             {
                 case LevelOutcomeHandler.LevelOutcome.Success:
@@ -91,7 +99,10 @@ namespace Game.Scripts.Runtime
 
                 foreach (MovementLogicBase movement in _movementLogic)
                 {
-                    moveDirection += movement.GetMovementVector();
+                    if (movement.enabled)
+                    {
+                        moveDirection += movement.GetMovementVector();
+                    }
                 }
 
                 _characterController.Move(moveDirection);
