@@ -34,7 +34,7 @@ namespace Game.Scripts.Runtime
 
         private List<MovementLogicBase> _movementLogic;
         private bool _isJumping;
-        private bool _isStopped;
+        private bool _isStopped = true;
 
         private LevelOutcomeHandler _levelOutcomeHandler;
 

@@ -36,6 +36,12 @@ namespace Game.Scripts.Runtime
         }
 
 
+        public void Init()
+        {
+            _character.GetComponent<CharacterMovementController>().MovementStatus(true);
+        }
+
+
         private void LoadLevel()
         {
             int levelId = _progressionManager.CurrentLevelId;
@@ -51,7 +57,6 @@ namespace Game.Scripts.Runtime
             _character.transform.position = startingPoint.position;
 
             _character.GetComponent<CharacterMovementSplineFollowing>().Init(_container);
-            _character.GetComponent<CharacterMovementController>().MovementStatus(true);
         }
     }
 }

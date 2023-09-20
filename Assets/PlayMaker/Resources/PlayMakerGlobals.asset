@@ -71,6 +71,12 @@ MonoBehaviour:
       showInInspector: 0
       networkSync: 0
       value: FadeOut
+    - useVariable: 1
+      name: FadeInSnap
+      tooltip: 
+      showInInspector: 0
+      networkSync: 0
+      value: FadeInSnap
     vector2Variables: []
     vector3Variables: []
     colorVariables: []
@@ -84,7 +90,7 @@ MonoBehaviour:
     enumVariables: []
     categories:
     - 
-    variableCategoryIDs: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
+    variableCategoryIDs: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   events:
   - LOADING_SCREEN_SHOWN
   - LOAD_SCENE_GAME
