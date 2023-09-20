@@ -49,12 +49,15 @@ namespace Game.Scripts.Runtime
         }
 
 
-        public void MovementStatus(bool status)
+        public void MovementStatus(bool status, bool ignoreAnim = false)
         {
             _isStopped = !status;
             _characterController.enabled = status;
 
-            _animatorController.SetTrigger(status ? _runAnimTrigger : _idleAnimTrigger);
+            if (!ignoreAnim)
+            {
+                _animatorController.SetTrigger(status ? _runAnimTrigger : _idleAnimTrigger);
+            }
         }
 
 
@@ -78,7 +81,6 @@ namespace Game.Scripts.Runtime
 
         private void OnLevelOutcome(LevelOutcomeHandler.LevelOutcome levelOutcome)
         {
-            MovementStatus(false);
             switch (levelOutcome)
             {
                 case LevelOutcomeHandler.LevelOutcome.Success:
@@ -88,6 +90,7 @@ namespace Game.Scripts.Runtime
                     _animatorController.SetTrigger(_idleAnimTrigger);
                     break;
             }
+            MovementStatus(false, true);
         }
 
 
