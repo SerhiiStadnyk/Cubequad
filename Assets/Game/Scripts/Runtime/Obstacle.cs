@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 namespace Game.Scripts.Runtime
 {
@@ -7,7 +8,18 @@ namespace Game.Scripts.Runtime
         [SerializeField]
         private string _playerTag = "Player";
 
+        [SerializeField]
+        private AudioClipId _impactClipId;
+
         private HealthComponent _healthComponent;
+        private AudioManager _audioManager;
+
+
+        [Inject]
+        public void Inject(AudioManager audioManager)
+        {
+            _audioManager = audioManager;
+        }
 
 
         protected void Awake()
@@ -34,6 +46,8 @@ namespace Game.Scripts.Runtime
             {
                 other.GetComponent<HealthComponent>().Health = -1;
                 _healthComponent.Health = -1;
+
+                _audioManager.PlaySfx(_impactClipId, transform);
             }
         }
 

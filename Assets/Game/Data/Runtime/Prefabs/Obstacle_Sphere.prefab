@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTag: Player
+  _impactClipId: {fileID: 11400000, guid: 33ba0c2fc53a6d343ae2b4ed0a6ed656, type: 2}
 --- !u!114 &3076773153849882671
 MonoBehaviour:
   m_ObjectHideFlags: 0
