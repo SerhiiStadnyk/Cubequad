@@ -13,9 +13,13 @@ namespace Game.Scripts.Runtime
         [SerializeField]
         private float _raycastHeightOffset;
 
+        [SerializeField]
+        private ScreenTouchArea _screenTouchArea;
+
         private Camera _camera;
         private CharacterMovementController _movementController;
         private SplinePathTracker _splinePathTracker;
+        private Vector3 _strafeValue;
 
 
         protected void Start()
@@ -26,40 +30,49 @@ namespace Game.Scripts.Runtime
         }
 
 
-        public override Vector3 GetMovementVector()
+        protected void OnEnable()
         {
-            return StrafeMovement();
+            _screenTouchArea.OnTouch += OnScreenTouch;
         }
 
 
-        private Vector3 StrafeMovement()
+        protected void OnDisable()
         {
-            Vector3 result = Vector3.zero;
+            _screenTouchArea.OnTouch -= OnScreenTouch;
+        }
 
-            if (Input.touchCount > 0)
+
+        public override Vector3 GetMovementVector()
+        {
+            Vector3 returnValue = _strafeValue;
+            _strafeValue = Vector3.zero;
+            return returnValue;
+        }
+
+
+        private void OnScreenTouch(Vector3 touchPos)
+        {
+            _strafeValue = Vector3.zero;
+
+            Vector3 touchPosition = Input.GetTouch(0).position;
+            Vector3 charPos = transform.position;
+
+            float camDist = Vector3.Distance(_camera.transform.position, charPos);
+            Vector3 targetPos = _camera.ScreenToWorldPoint(new Vector3(touchPosition.x, charPos.y, camDist));
+
+            // Adjust targetPos to be on the same y-plane and z-plane as charPos
+            Vector3 localTargetPos = transform.InverseTransformPoint(targetPos);
+            localTargetPos.y = 0;
+            localTargetPos.z = 0;
+            targetPos = transform.TransformPoint(localTargetPos);
+
+            Vector3 offset = targetPos - charPos;
+            float magnitude = offset.magnitude;
+
+            if (magnitude > 0.1f && CanStrafe(targetPos, targetPos))
             {
-                Vector3 touchPosition = Input.GetTouch(0).position;
-                Vector3 charPos = transform.position;
-
-                float camDist = Vector3.Distance(_camera.transform.position, charPos);
-                Vector3 targetPos = _camera.ScreenToWorldPoint(new Vector3(touchPosition.x, charPos.y, camDist));
-
-                // Adjust targetPos to be on the same y-plane and z-plane as charPos
-                Vector3 localTargetPos = transform.InverseTransformPoint(targetPos);
-                localTargetPos.y = 0;
-                localTargetPos.z = 0;
-                targetPos = transform.TransformPoint(localTargetPos);
-
-                Vector3 offset = targetPos - charPos;
-                float magnitude = offset.magnitude;
-
-                if (magnitude > 0.1f && CanStrafe(targetPos, targetPos))
-                {
-                    result = offset.normalized * (_strafeSpeed * Time.deltaTime);
-                }
+                _strafeValue = offset.normalized * (_strafeSpeed * Time.deltaTime);
             }
-
-            return result;
         }
 
 
