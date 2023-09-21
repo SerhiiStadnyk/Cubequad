@@ -23,7 +23,6 @@ namespace Game.Scripts.Runtime
                 // Check if the touch is not over the transparent image
                 if (IsTouchOverImage(touch.position))
                 {
-                    Debug.LogWarning("2");
                     // Handle swipe input here
                     Vector2 touchPosition = touch.position;
                     OnTouch?.Invoke(touchPosition);

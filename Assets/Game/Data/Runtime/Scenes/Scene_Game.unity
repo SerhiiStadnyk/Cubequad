@@ -4323,6 +4323,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f57015e51ccfb7468bc17a0504d710a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1509134084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5242330665140389103, guid: f93be042f8e4b4145a4a30487cf0be5e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1509134074}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106500123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc85628c5be8e07438f2190162a13bcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1544647705
 GameObject:
   m_ObjectHideFlags: 0
@@ -5894,6 +5906,7 @@ GameObject:
   - component: {fileID: 1927657127}
   - component: {fileID: 1927657129}
   - component: {fileID: 1927657128}
+  - component: {fileID: 1927657130}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -5977,6 +5990,23 @@ MonoBehaviour:
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
+--- !u!114 &1927657130
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927657123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &2055265561
 GameObject:
   m_ObjectHideFlags: 0
@@ -5987,6 +6017,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2055265562}
   - component: {fileID: 2055265563}
+  - component: {fileID: 2055265564}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -6049,6 +6080,22 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1927657124}
+--- !u!114 &2055265564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055265561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8416875e412eb8489768cd42dab881c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakeDuration: 0.5
+  _shakeStrength: 5
+  _camera: {fileID: 2055265563}
+  _targetHealth: {fileID: 1509134084}
 --- !u!1 &2064922080
 GameObject:
   m_ObjectHideFlags: 0
