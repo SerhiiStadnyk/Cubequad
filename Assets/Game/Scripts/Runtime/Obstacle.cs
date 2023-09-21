@@ -11,6 +11,9 @@ namespace Game.Scripts.Runtime
         [SerializeField]
         private AudioClipId _impactClipId;
 
+        [SerializeField]
+        private GameObject _destructionParticlesPrefab;
+
         private HealthComponent _healthComponent;
         private AudioManager _audioManager;
 
@@ -52,10 +55,20 @@ namespace Game.Scripts.Runtime
         }
 
 
+        private void SpawnParticles()
+        {
+            GameObject particleObject = Instantiate(_destructionParticlesPrefab, transform.position, transform.rotation, transform.parent);
+            ParticleSystem particle = particleObject.GetComponent<ParticleSystem>();
+            ParticleSystem.ShapeModule shapeModule = particle.shape;
+            shapeModule.scale = transform.localScale;
+        }
+
+
         private void OnHealthChanged()
         {
             if (_healthComponent.Health <= 0)
             {
+                SpawnParticles();
                 Destroy(gameObject);
             }
         }
