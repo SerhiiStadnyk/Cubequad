@@ -1,3 +1,5 @@
+using System.Collections;
+using Cinemachine;
 using UnityEngine;
 using Zenject;
 
@@ -13,6 +15,12 @@ namespace Game.Scripts.Runtime
 
         [SerializeField]
         private Transform _levelContainer;
+
+        [SerializeField]
+        private CinemachineVirtualCamera _cameraVirt;
+
+        [SerializeField]
+        private SplinePathFollower _splinePathFollower;
 
         private GameObject _characterObject;
         private Level _currentLevel;
@@ -53,10 +61,13 @@ namespace Game.Scripts.Runtime
 
         private void InitPlayer()
         {
+            _cameraVirt.enabled = false;
             Transform startingPoint = _currentLevel.StartingPlatform.InputSplinePoints[0].transform;
             _character.transform.position = startingPoint.position;
 
             _character.GetComponent<CharacterMovementSplineFollowing>().Init(_container);
+            _splinePathFollower.Init();
+            _cameraVirt.enabled = true;
         }
     }
 }

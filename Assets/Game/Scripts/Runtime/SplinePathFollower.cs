@@ -13,9 +13,15 @@ namespace Game.Scripts.Runtime
         private Transform _transform;
 
 
-        protected void Start()
+        protected void Awake()
         {
             _transform = transform;
+        }
+
+
+        public void Init()
+        {
+            Follow();
         }
 
 
@@ -23,12 +29,18 @@ namespace Game.Scripts.Runtime
         {
             if (_splinePathTracker != null && _splinePathTracker.SplinePointTarget != null)
             {
-                Vector3 followerPos = _splinePathTracker.SplinePointTarget.transform.InverseTransformPoint(_targetTransform.position);
-                followerPos.x = 0;
-                followerPos = _splinePathTracker.SplinePointTarget.transform.TransformPoint(followerPos);
-                _transform.position = followerPos;
-                _transform.rotation = _targetTransform.rotation;
+                Follow();
             }
+        }
+
+
+        private void Follow()
+        {
+            Vector3 followerPos = _splinePathTracker.SplinePointTarget.transform.InverseTransformPoint(_targetTransform.position);
+            followerPos.x = 0;
+            followerPos = _splinePathTracker.SplinePointTarget.transform.TransformPoint(followerPos);
+            _transform.position = followerPos;
+            _transform.rotation = _targetTransform.rotation;
         }
     }
 }
