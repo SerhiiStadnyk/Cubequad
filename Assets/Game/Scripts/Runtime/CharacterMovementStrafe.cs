@@ -53,12 +53,10 @@ namespace Game.Scripts.Runtime
         private void OnScreenTouch(Vector3 touchPos)
         {
             _strafeValue = Vector3.zero;
-
-            Vector3 touchPosition = Input.GetTouch(0).position;
             Vector3 charPos = transform.position;
 
             float camDist = Vector3.Distance(_camera.transform.position, charPos);
-            Vector3 targetPos = _camera.ScreenToWorldPoint(new Vector3(touchPosition.x, charPos.y, camDist));
+            Vector3 targetPos = _camera.ScreenToWorldPoint(new Vector3(touchPos.x, charPos.y, camDist));
 
             // Adjust targetPos to be on the same y-plane and z-plane as charPos
             Vector3 localTargetPos = transform.InverseTransformPoint(targetPos);
