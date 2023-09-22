@@ -1,33 +1,54 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.Scripts.Runtime
 {
     public partial class SafeAreaAdjuster : MonoBehaviour
     {
+        private Rect _safeArea;
         private RectTransform _rectTransform;
-        private Vector2 _deltaPos;
+        private CanvasScaler _canvasScaler;
+
 
         protected void Awake()
         {
-            UpdateCanvas();
+            _rectTransform = GetComponent<RectTransform>();
+            _canvasScaler = GetComponentInParent<CanvasScaler>();
         }
 
 
-        private void UpdateCanvas()
+        protected void OnEnable()
         {
-            if (_rectTransform == null)
-            {
-                _rectTransform = GetComponent<RectTransform>();
-            }
+            Canvas.willRenderCanvases += UpdateSafeArea;
+        }
 
+
+        protected void OnDisable()
+        {
+            Canvas.willRenderCanvases -= UpdateSafeArea;
+        }
+
+
+        private void UpdateSafeArea()
+        {
             Rect safeArea = Screen.safeArea;
-            // Convert safe area coordinates to canvas space
-            Vector2 min = safeArea.min;
-            Vector2 max = safeArea.max;
+            if (safeArea != _safeArea)
+            {
+                _safeArea = safeArea;
 
-            // Adjust the anchors of the safe area panel
-            _rectTransform.anchorMin = new Vector2(min.x / Screen.width, min.y / Screen.height);
-            _rectTransform.anchorMax = new Vector2(max.x / Screen.width, max.y / Screen.height);
+                float bottomPixels = Screen.safeArea.y;
+                float topPixel = Screen.currentResolution.height - (Screen.safeArea.y + Screen.safeArea.height);
+
+                float bottomRatio = bottomPixels / Screen.currentResolution.height;
+                float topRatio = topPixel / Screen.currentResolution.height;
+
+                Vector2 referenceResolution = _canvasScaler.referenceResolution;
+                float bottomUnits = referenceResolution.y * bottomRatio;
+                float topUnits = referenceResolution.y * topRatio;
+
+                _rectTransform.offsetMin = new Vector2(_rectTransform.offsetMin.x, bottomUnits);
+                _rectTransform.offsetMax = new Vector2(_rectTransform.offsetMax.x, -topUnits);
+            }
         }
     }
 }
